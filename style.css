@@ -1,0 +1,15 @@
+#win0divSSR_REGFORM_VWGP\$0 {
+    position: relative;
+}
+
+.timetable-button {
+    position: absolute;
+    right: 0;
+}
+
+#timetable {
+    position: absolute;
+    right: -825px;
+    top: -40px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
