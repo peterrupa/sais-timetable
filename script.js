@@ -1,6 +1,6 @@
 var canvasHTML = '<canvas id="timetable" width="811" height=""391/>'
                 + '<a download="schedule.png" class="SSSBUTTON_ACTIONLINK"'
-                + ' id="download-btn">Download Schedule</a>'
+                + ' id="download-btn">Download Schedule</a>';
 
 
 var buttonHTML = '' +
@@ -31,6 +31,7 @@ $(document).ready(function() {
             var durationElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_SCHED_LONG$"]', iframe.contents());
             var roomElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_LOC_LONG$"]', iframe.contents())
             var subjects = [];
+            var colors = {};
 
             $('#timetable', iframe.contents()).remove();
 
@@ -39,13 +40,19 @@ $(document).ready(function() {
                 var courseName = subjectsFullCourseName.match(/[^-]+-/)[0];
 
                 if($(durationElement[i]).text() !== 'TBA') {
+                    courseName = courseName.substring(0, courseName.length - 1);
+
                     subjects.push({
-                        courseName: courseName.substring(0, courseName.length - 1),
+                        courseName: courseName,
                         section: subjectsFullCourseName.match(/-[A-Z0-9]+/)[0].substring(1),
                         day: parseDay($(durationElement[i]).text()),
                         time: parseTime($(durationElement[i]).text()),
                         room: $(roomElement[i]).text()
                     });
+
+                    if (!(courseName in colors)) {
+                        colors[courseName] = getRandomColor();
+                    }
                 }
             });
 
@@ -96,7 +103,12 @@ $(document).ready(function() {
 
                 subjects.forEach(function(subject) {
                     if(subject.day) {
-                        scheda.drawCourse(subject.day.map(function(date){ return convertDate(date) }).join(''), subject.time.start + '-' + subject.time.end, subject.courseName, subject.section, subject.room);
+                        scheda.drawCourse(subject.day.map(function(date){ 
+                            return convertDate(date) }).join(''), 
+                                    subject.time.start + '-' + subject.time.end, 
+                                    subject.courseName, subject.section, subject.room,
+                                    colors[subject.courseName]
+                        );
                     }
                 });
             }
@@ -164,4 +176,13 @@ function downloadSchedule () {
     dt = dt.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=schedule.png');
 
     this.href = dt;
+}
+
+function getRandomColor () {
+    letters = '0123456789ABCDEF'.split('');
+    color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
