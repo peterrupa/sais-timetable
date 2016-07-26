@@ -1,6 +1,6 @@
 var canvasHTML = '<canvas id="timetable" width="811" height=""391/>'
-                + '<a href="#" download="schedule.png" id="download-btn">'
-                + 'Download Schedule</a>'
+                + '<a download="schedule.png" class="SSSBUTTON_ACTIONLINK"'
+                + ' id="download-btn">Download Schedule</a>'
 
 
 var buttonHTML = '' +
