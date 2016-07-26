@@ -1,5 +1,7 @@
-var canvasHTML = '' + 
-    '<canvas id="timetable" width="811" height=""391/>';
+var canvasHTML = '<canvas id="timetable" width="811" height=""391/>'
+                + '<a href="#" download="schedule.png" id="download-btn">'
+                + 'Download Schedule</a>'
+
 
 var buttonHTML = '' +
     '<a href="#" class="timetable-button">+</a>'; 
@@ -15,6 +17,10 @@ $(document).ready(function() {
         setInterval(function() {
             if($('#timetable', iframe.contents()).length === 0) {
                 createTimeTable();
+            }
+            else {
+                iframeWindow.document.getElementById('download-btn')
+                            .addEventListener('click', downloadSchedule, false);
             }
         }, 50)
 
@@ -146,4 +152,16 @@ function convertDate(date) {
 
 function cloneArray(array) {
     return JSON.parse(JSON.stringify(array));
+}
+
+function downloadSchedule () {
+    iframe = $('#ptifrmtgtframe');
+    iframeWindow = iframe[0].contentWindow || iframe[0].contentWindow.window;
+    timetable = iframeWindow.document.getElementById('timetable');
+
+    dt = timetable.toDataURL('image/png');
+    dt = dt.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+    dt = dt.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=schedule.png');
+
+    this.href = dt;
 }
