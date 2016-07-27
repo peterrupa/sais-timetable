@@ -1,10 +1,15 @@
 var canvasHTML = '<canvas id="timetable" width="811" height=""391/>'
                 + '<a download="schedule.png" class="SSSBUTTON_ACTIONLINK"'
-                + ' id="download-btn">Download Schedule</a>'
+                + ' id="download-btn">Download Schedule</a>';
 
 
 var buttonHTML = '' +
     '<a href="#" class="timetable-button">+</a>'; 
+
+var selectedColors = [
+                        '#FF6600','#086B08','#4B7188','#8C0005','#FF69B1',
+                        '#191973','#474747','#8B5928','#C824F9','#8EEFC2'
+                    ];
 
 $(document).ready(function() {
     var iframe = $('#ptifrmtgtframe');
@@ -29,8 +34,9 @@ $(document).ready(function() {
         function createTimeTable() {
             var subjectsElement = $('span[title="View Details"]', iframe.contents());
             var durationElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_SCHED_LONG$"]', iframe.contents());
-            var roomElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_LOC_LONG$"]', iframe.contents())
+            var roomElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_LOC_LONG$"]', iframe.contents());
             var subjects = [];
+            var colors = {};
 
             $('#timetable', iframe.contents()).remove();
 
@@ -39,13 +45,19 @@ $(document).ready(function() {
                 var courseName = subjectsFullCourseName.match(/[^-]+-/)[0];
 
                 if($(durationElement[i]).text() !== 'TBA') {
+                    courseName = courseName.substring(0, courseName.length - 1);
+
                     subjects.push({
-                        courseName: courseName.substring(0, courseName.length - 1),
+                        courseName: courseName,
                         section: subjectsFullCourseName.match(/-[A-Z0-9]+/)[0].substring(1),
                         day: parseDay($(durationElement[i]).text()),
                         time: parseTime($(durationElement[i]).text()),
                         room: $(roomElement[i]).text()
                     });
+
+                    if (!(courseName in colors)) {
+                        colors[courseName] = selectedColors.shift();
+                    }
                 }
             });
 
@@ -96,7 +108,12 @@ $(document).ready(function() {
 
                 subjects.forEach(function(subject) {
                     if(subject.day) {
-                        scheda.drawCourse(subject.day.map(function(date){ return convertDate(date) }).join(''), subject.time.start + '-' + subject.time.end, subject.courseName, subject.section, subject.room);
+                        scheda.drawCourse(subject.day.map(function(date){ 
+                            return convertDate(date) }).join(''), 
+                                    subject.time.start + '-' + subject.time.end, 
+                                    subject.courseName, subject.section, subject.room,
+                                    colors[subject.courseName]
+                        );
                     }
                 });
             }
