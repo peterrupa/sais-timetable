@@ -56,6 +56,14 @@ $(document).ready(function() {
                     });
 
                     if (!(courseName in colors)) {
+
+                        if (selectedColors.length <= 0) {
+                            selectedColors = [
+                                        '#FF6600','#086B08','#4B7188','#8C0005','#FF69B1',
+                                        '#191973','#474747','#8B5928','#C824F9','#8EEFC2'
+                                    ];
+                        }
+
                         colors[courseName] = selectedColors.shift();
                     }
                 }
