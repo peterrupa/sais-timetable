@@ -50,31 +50,32 @@ $(document).ready(function() {
         createTimeTable();
 
         function createTimeTable() {
-            var subjectsElement = $('span[title="View Details"]', iframe.contents());
-            var durationElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_SCHED_LONG$"]', iframe.contents());
-            var roomElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_LOC_LONG$"]', iframe.contents());
             var subjects = [];
             var colors = {};
 
             $('#timetable', iframe.contents()).remove();
 
-            subjectsElement.each(function(i) {
-                var subjectsFullCourseName = $(this).text().replace('\n', '');
-                var courseName = subjectsFullCourseName.match(/[^-]+-/)[0];
+            // check if we're on the search part
+            if($('a[id="DERIVED_SSS_CRT_LINK_ADD_ENRL"]', iframe.contents()).length) {
+                var subjectsElement = $('[id^="DERIVED_SSS_CRT_SSS_SUBJ_CATLG$"]', iframe.contents());
+                var durationRoomElement = $('[id^="DERIVED_SSS_CRT_SSR_MTG_SCHED_LONG$"]', iframe.contents());
 
-                if($(durationElement[i]).text() !== 'TBA') {
-                    courseName = courseName.substring(0, courseName.length - 1);
+                subjectsElement.each(function(i) {
+                    var courseName = $(this).text();
+                    var durationRoom = $(durationRoomElement[i]).text().split('\n');
+
+                    if(courseName === ' ') {
+                        courseName = $(this).closest('[id^="trSSR_REGFORM_VW$0_row"]').prev().find('[id^="DERIVED_SSS_CRT_SSS_SUBJ_CATLG$"]').text()
+                    }
 
                     subjects.push({
                         courseName: courseName,
-                        section: subjectsFullCourseName.match(/-[A-Z0-9]+/)[0].substring(1),
-                        day: parseDay($(durationElement[i]).text()),
-                        time: parseTime($(durationElement[i]).text()),
-                        room: $(roomElement[i]).text()
+                        day: parseDay(durationRoom[0]),
+                        time: parseTime(durationRoom[0]),
+                        room: durationRoom[1]
                     });
 
                     if (!(courseName in colors)) {
-
                         if (selectedColors.length <= 0) {
                             selectedColors = [
                                         '#FF6600','#086B08','#4B7188','#8C0005','#FF69B1',
@@ -84,8 +85,42 @@ $(document).ready(function() {
 
                         colors[courseName] = selectedColors.shift();
                     }
-                }
-            });
+                });
+            }
+            // we're on add to cart page probably
+            else {
+                var subjectsElement = $('span[title="View Details"]', iframe.contents());
+                var durationElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_SCHED_LONG$"]', iframe.contents());
+                var roomElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_LOC_LONG$"]', iframe.contents());
+
+                subjectsElement.each(function(i) {
+                    var subjectsFullCourseName = $(this).text().replace('\n', '');
+                    var courseName = subjectsFullCourseName.match(/[^-]+-/)[0];
+
+                    if($(durationElement[i]).text() !== 'TBA') {
+                        courseName = courseName.substring(0, courseName.length - 1);
+
+                        subjects.push({
+                            courseName: courseName,
+                            section: subjectsFullCourseName.match(/-[A-Z0-9]+/)[0].substring(1),
+                            day: parseDay($(durationElement[i]).text()),
+                            time: parseTime($(durationElement[i]).text()),
+                            room: $(roomElement[i]).text()
+                        });
+
+                        if (!(courseName in colors)) {
+                            if (selectedColors.length <= 0) {
+                                selectedColors = [
+                                            '#FF6600','#086B08','#4B7188','#8C0005','#FF69B1',
+                                            '#191973','#474747','#8B5928','#C824F9','#8EEFC2'
+                                        ];
+                            }
+
+                            colors[courseName] = selectedColors.shift();
+                        }
+                    }
+                });
+            }
 
             $('[id="win0divSSR_REGFORM_VW$0"]', iframe.contents()).prepend(container);
 
@@ -127,15 +162,15 @@ $(document).ready(function() {
                     }
                 });
 
-                console.log(subjects);
-
                 subjects.forEach(function(subject) {
                     if(subject.day) {
-                        scheda.drawCourse(subject.day.map(function(date){ 
-                            return convertDate(date) }).join(''), 
-                                    subject.time.start + '-' + subject.time.end, 
-                                    subject.courseName, subject.section, subject.room,
-                                    colors[subject.courseName]
+                        scheda.drawCourse(
+                            subject.day.map(convertDate).join(''),
+                            subject.time.start + '-' + subject.time.end,
+                            subject.courseName,
+                            subject.section,
+                            subject.room,
+                            colors[subject.courseName]
                         );
                     }
                 });
@@ -180,16 +215,11 @@ function parseTime(fullDay) {
 }
 
 function convertDate(date) {
-    if(date === 'Mo') return 'M';
-    if(date === 'Tu') return 'T';
-    if(date === 'We') return 'W';
-    if(date === 'Th') return 'Th';
-    if(date === 'Fr') return 'F';
-    if(date === 'Sa') return 'S';
+    return date === 'Th' ? 'Th' : date[0];
 }
 
 function cloneArray(array) {
-    return JSON.parse(JSON.stringify(array));
+    return array.slice()
 }
 
 function downloadSchedule () {
