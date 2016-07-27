@@ -11,7 +11,7 @@ var buttonHTML = '' +
     '<a href="#" class="timetable-button SSSBUTTON_ACTIONLINK">Toggle Timetable</a>';
 
 var container = '' +
-    '<table>' +
+    '<table id="timetable-container">' +
         '<tr>' +
             '<td width="250px"></td>' +
             '<td>' +
@@ -122,7 +122,14 @@ $(document).ready(function() {
                 });
             }
 
-            $('[id="win0divSSR_REGFORM_VW$0"]', iframe.contents()).prepend(container);
+            if($('[id="win0divSSR_REGFORM_VW$0"]', iframe.contents()).length) {
+                $('[id="win0divSSR_REGFORM_VW$0"]', iframe.contents()).prepend(container);
+            }
+            else {
+                $('[id="ACE_DERIVED_REGFRM1_"]', iframe.contents()).children('tbody').children('tr:nth-child(3)').children('td').append(container);
+
+                $('#timetable-container').find('td').first().css('width', '400');
+            }
 
             if(toggleState) {
                 $('#timetable', iframe.contents()).show(ANIMATION_DURATION);
