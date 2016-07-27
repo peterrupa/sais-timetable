@@ -1,10 +1,28 @@
-var canvasHTML = '<canvas id="timetable" width="811" height=""391/>'
-                + '<a download="schedule.png" class="SSSBUTTON_ACTIONLINK"'
-                + ' id="download-btn">Download Schedule</a>';
+var ANIMATION_DURATION = 100;
 
+var canvasHTML = '<canvas id="timetable" width="811" height=""391/>';
+
+var downloadButtonHTML = '' +
+    '<a download="schedule.png" class="SSSBUTTON_ACTIONLINK" id="download-btn"> ' + 
+        'Download Schedule' + 
+    '</a>';
 
 var buttonHTML = '' +
-    '<a href="#" class="timetable-button">+</a>'; 
+    '<a href="#" class="timetable-button SSSBUTTON_ACTIONLINK">Toggle Timetable</a>';
+
+var container = '' +
+    '<table>' +
+        '<tr>' +
+            '<td width="250px"></td>' +
+            '<td>' +
+                downloadButtonHTML +
+            '</td>' + 
+            '<td style="position:relative">' +
+                canvasHTML +
+                buttonHTML +
+            '</td>'
+        '</tr>' +
+    '</table>'; 
 
 var selectedColors = [
                         '#FF6600','#086B08','#4B7188','#8C0005','#FF69B1',
@@ -69,18 +87,15 @@ $(document).ready(function() {
                 }
             });
 
-            $('[id="win0divSSR_REGFORM_VWGP$0"]', iframe.contents()).append(canvasHTML);
-            $('[id="win0divSSR_REGFORM_VWGP$0"]', iframe.contents()).append(buttonHTML);
+            $('[id="win0divSSR_REGFORM_VW$0"]', iframe.contents()).prepend(container);
 
             if(toggleState) {
-                $('#timetable', iframe.contents()).show();
+                $('#timetable', iframe.contents()).show(ANIMATION_DURATION);
                 toggleState = true;
-                $('.timetable-button', iframe.contents()).text('-');
             }
             else {
-                $('#timetable', iframe.contents()).hide();
+                $('#timetable', iframe.contents()).hide(ANIMATION_DURATION);
                 toggleState = false;
-                $('.timetable-button', iframe.contents()).text('+');
             }
 
             if($('#timetable', iframe.contents()).length) {
@@ -129,13 +144,11 @@ $(document).ready(function() {
             $('.timetable-button', iframe.contents()).on('click', function(e) {
                 if(toggleState) {
                     toggleState = false;
-                    $('#timetable', iframe.contents()).hide();
-                    $('.timetable-button', iframe.contents()).text('+');
+                    $('#timetable', iframe.contents()).hide(ANIMATION_DURATION);
                 }
                 else {
                     toggleState = true;
-                    $('#timetable', iframe.contents()).show();
-                    $('.timetable-button', iframe.contents()).text('-');
+                    $('#timetable', iframe.contents()).show(ANIMATION_DURATION);
                 }
             });
         }
