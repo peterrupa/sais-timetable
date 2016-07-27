@@ -6,6 +6,11 @@ var canvasHTML = '<canvas id="timetable" width="811" height=""391/>'
 var buttonHTML = '' +
     '<a href="#" class="timetable-button">+</a>'; 
 
+var selectedColors = [
+                        '#FF6600','#086B08','#4B7188','#8C0005','#FF69B1',
+                        '#191973','#474747','#8B5928','#C824F9','#8EEFC2'
+                    ];
+
 $(document).ready(function() {
     var iframe = $('#ptifrmtgtframe');
     var toggleState = false;
@@ -29,7 +34,7 @@ $(document).ready(function() {
         function createTimeTable() {
             var subjectsElement = $('span[title="View Details"]', iframe.contents());
             var durationElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_SCHED_LONG$"]', iframe.contents());
-            var roomElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_LOC_LONG$"]', iframe.contents())
+            var roomElement = $('[id^="DERIVED_REGFRM1_SSR_MTG_LOC_LONG$"]', iframe.contents());
             var subjects = [];
             var colors = {};
 
@@ -51,7 +56,7 @@ $(document).ready(function() {
                     });
 
                     if (!(courseName in colors)) {
-                        colors[courseName] = getRandomColor();
+                        colors[courseName] = selectedColors.shift();
                     }
                 }
             });
@@ -176,13 +181,4 @@ function downloadSchedule () {
     dt = dt.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=schedule.png');
 
     this.href = dt;
-}
-
-function getRandomColor () {
-    letters = '0123456789ABCDEF'.split('');
-    color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
 }
