@@ -62,17 +62,36 @@ $(document).ready(function() {
 
                 subjectsElement.each(function(i) {
                     var courseName = $(this).text();
-                    var durationRoom = $(durationRoomElement[i]).text().split('\n');
+                    var durationRoomTemp = $(durationRoomElement[i]).text().split('\n');
+                    var durationRoom = [];
+
+                    for(var j = 0; j < durationRoomTemp.length / 2 + 1; j += 2) {
+                        durationRoom.push({
+                            day: parseDay(durationRoomTemp[j]),
+                            time: parseTime(durationRoomTemp[j]),
+                            room: durationRoomTemp[j + 1]
+                        });
+                    }
 
                     if(courseName === ' ') {
                         courseName = $(this).closest('[id^="trSSR_REGFORM_VW$0_row"]').prev().find('[id^="DERIVED_SSS_CRT_SSS_SUBJ_CATLG$"]').text()
                     }
 
+                    var day = durationRoom.map(function(o) {
+                        return o.day;
+                    });
+                    var time = durationRoom.map(function(o) {
+                        return o.time;
+                    });
+                    var room = durationRoom.map(function(o) {
+                        return o.room;
+                    });
+
                     subjects.push({
                         courseName: courseName,
-                        day: parseDay(durationRoom[0]),
-                        time: parseTime(durationRoom[0]),
-                        room: durationRoom[1]
+                        day: day,
+                        time: time,
+                        room: room
                     });
 
                     if (!(courseName in colors)) {
@@ -100,12 +119,17 @@ $(document).ready(function() {
                     if($(durationElement[i]).text() !== 'TBA') {
                         courseName = courseName.substring(0, courseName.length - 1);
 
+                        var dayTime = $(durationElement[i]).text().split('\n') 
+                        var day = dayTime.map(parseDay)
+                        var time = dayTime.map(parseTime)
+                        var room = $(roomElement[i]).text().split('\n');
+
                         subjects.push({
                             courseName: courseName,
                             section: subjectsFullCourseName.match(/-[A-Z0-9]+/)[0].substring(1),
-                            day: parseDay($(durationElement[i]).text()),
-                            time: parseTime($(durationElement[i]).text()),
-                            room: $(roomElement[i]).text()
+                            day: day,
+                            time: time,
+                            room: room
                         });
 
                         if (!(courseName in colors)) {
@@ -171,14 +195,16 @@ $(document).ready(function() {
 
                 subjects.forEach(function(subject) {
                     if(subject.day) {
-                        scheda.drawCourse(
-                            subject.day.map(convertDate).join(''),
-                            subject.time.start + '-' + subject.time.end,
-                            subject.courseName,
-                            subject.section,
-                            subject.room,
-                            colors[subject.courseName]
-                        );
+                        for(var i = 0; i < subject.day.length; i++) {
+                            scheda.drawCourse(
+                                subject.day[i].map(convertDate).join(''),
+                                subject.time[i].start + '-' + subject.time[i].end,
+                                subject.courseName,
+                                subject.section,
+                                subject.room[i],
+                                colors[subject.courseName]
+                            );
+                        }
                     }
                 });
             }
