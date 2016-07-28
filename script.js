@@ -125,7 +125,7 @@ $(document).ready(function() {
             if($('[id="win0divSSR_REGFORM_VW$0"]', iframe.contents()).length) {
                 $('[id="win0divSSR_REGFORM_VW$0"]', iframe.contents()).prepend(container);
             }
-            else {
+            else if(/Confirm classes$/.test($('#DERIVED_REGFRM1_TITLE1', iframe.contents()).text())) {
                 $('[id="ACE_DERIVED_REGFRM1_"]', iframe.contents()).children('tbody').children('tr:nth-child(3)').children('td').append(container);
 
                 $('#timetable-container').find('td').first().css('width', '400');
