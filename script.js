@@ -196,14 +196,16 @@ $(document).ready(function() {
                 subjects.forEach(function(subject) {
                     if(subject.day) {
                         for(var i = 0; i < subject.day.length; i++) {
-                            scheda.drawCourse(
-                                subject.day[i].map(convertDate).join(''),
-                                subject.time[i].start + '-' + subject.time[i].end,
-                                subject.courseName,
-                                subject.section,
-                                subject.room[i],
-                                colors[subject.courseName]
-                            );
+                            if(subject.day[i]) {
+                                scheda.drawCourse(
+                                    subject.day[i].map(convertDate).join(''),
+                                    subject.time[i].start + '-' + subject.time[i].end,
+                                    subject.courseName,
+                                    subject.section,
+                                    subject.room[i],
+                                    colors[subject.courseName]
+                                );
+                            }
                         }
                     }
                 });
