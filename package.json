@@ -16,6 +16,9 @@
     "start": "webpack --watch",
     "build": "webpack",
     "build:prod": "webpack -p",
-    "webext": "cd build && web-ext run -f=nightly"
+    "webext": "cd build && web-ext run --start-url sais.up.edu.ph -f=nightly"
+  },
+  "dependencies": {
+    "domready": "^1.0.8"
   }
 }
