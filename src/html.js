@@ -12,9 +12,9 @@ const canvasStyle = {
 }
 
 const canvas = `
-  <canvas id="timetable" style=${
+  <canvas id="timetable" style="${
     Object.entries(canvasStyle).reduce((s, [key, value]) => `${s}${key}:${value}; `, '')
-  } />
+  }" />
 `;
 
 const toggle = '<a href="#" class="timetable-button SSSBUTTON_ACTIONLINK">Toggle Timetable</a>';
@@ -25,8 +25,8 @@ const wrapper = `
       <td width="250"></td>
       <td>${download}</td>
       <td>${toggle}</td>
+      <td style="position: relative;">${canvas}</td>
     </tr>
-    ${canvas}
   </table>
 `;
 

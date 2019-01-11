@@ -24,7 +24,7 @@ class Subject {
     const time = this.time.replace(/:/g, '').split('-');
     const [start, end] = time.map((t, i) => this._convertTime(t, i));
 
-    const dayIndex = DAYS.findIndex(day => day.toUpperCase().startsWith(this.day));
+    const dayIndex = DAYS.findIndex(day => day.toUpperCase().startsWith(this.day.toUpperCase()));
     this._drawCourse(ctx, { start, end }, dayIndex, theme.timeColumnWidth, cell, theme.sched);
   }
 
@@ -118,7 +118,7 @@ class Subject {
   _convertTime(string, isEnd) {
     string = string.padEnd(3, '0');
 
-    const time = +string;
+    let time = +string;
     if (this._timeIsPM(time, isEnd)) time += 1200;
 
     string = time.toString();

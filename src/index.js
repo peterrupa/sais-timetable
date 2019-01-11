@@ -26,7 +26,7 @@ const Application = function () {
 
       // Create HTML
       const cart = this.document.querySelector(Cart.LIST);
-      cart.innerHTML = wrapper + cart.innerHTML;
+      if (cart) cart.innerHTML = wrapper + cart.innerHTML;
     }
 
     // Render Table
