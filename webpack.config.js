@@ -8,7 +8,7 @@ const config = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'build')
   },
-  mode: 'production',
+  mode: 'development',
   plugins: [
     new CopyWebpackPlugin([
       { from: './src/config' }
