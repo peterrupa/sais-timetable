@@ -1,65 +1,27 @@
 import { IFRAME, TIMETABLE, Cart } from './selectors';
-import { IS_SEARCH_PAGE, IS_VALID_COURSE } from './conditionals';
+import { IS_SEARCH_PAGE } from './conditionals';
 import wrapper from './html';
 
-import Scheda from './scheda';
-
 import handleAddToCart from './pages/cart';
-
-export const defaultColors = [
-  '#FF6600', '#086B08', '#4B7188', '#8C0005', '#FF69B1',
-  '#191973', '#474747', '#8B5928', '#C824F9', '#8EEFC2'
-];
+import handleSearchPage from './pages/search';
+import { renderTable } from './pages/timetable';
 
 const Application = function () {
   if (this.document.readyState === 'complete') {
-    let courses;
-    let colorIndex = 0;
-    const colorMapping = {};
-
     if (IS_SEARCH_PAGE(this.document)) {
-      console.log('SEARCH PAGE');
+      handleSearchPage(this.document);
     } else {
-      courses = handleAddToCart(this.document);
+      const courses = handleAddToCart(this.document);
 
       console.log(courses);
 
-      // Create HTML
+      // Render Table
       const cart = this.document.querySelector(Cart.LIST);
-      if (cart) cart.innerHTML = wrapper + cart.innerHTML;
-    }
-
-    // Render Table
-    const table = this.document.querySelector(TIMETABLE);
-    const scheda = new Scheda();
-    scheda.init(table);
-
-    // Render Courses
-    courses.forEach(({ day, time, course: courseCode, section, room }) => {
-      if (IS_VALID_COURSE(day, time)) {
-        // Get Color
-        let color;
-        if (colorMapping.hasOwnProperty(courseCode)) {
-          color = colorMapping[courseCode];
-        } else {
-          color = defaultColors[colorIndex % defaultColors.length];
-          colorIndex++;
-          colorMapping[courseCode] = color;
-        }
-
-        // Loop through days
-        day.forEach(day => {
-          scheda.add({
-            day,
-            time: `${time.start}-${time.end}`,
-            courseCode,
-            section,
-            room,
-            color
-          });
-        });
+      if (cart) {
+        cart.innerHTML = wrapper + cart.innerHTML;
+        renderTable(this.document.querySelector(TIMETABLE), courses);
       }
-    });
+    }
   }
 }
 
@@ -77,7 +39,14 @@ if (iframe) {
     //     app();
     //   }
     // }, 50);
+    const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+    const observer = new MutationObserver(() => {
+      if (!this.document.querySelector(TIMETABLE)) {
+        app();
+      }
+    });
 
     app();
+    observer.observe(this.document, { subtree: true, attributes: true });
   });
 }
