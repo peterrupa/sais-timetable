@@ -5,19 +5,19 @@
   "repository": "git@github.com:rrsilaya/sais-timetable.git",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "babel-loader": "^8.0.5",
     "copy-webpack-plugin": "^4.5.2",
     "web-ext": "^2.7.0",
     "webpack": "^4.14.0",
     "webpack-cli": "^3.0.8",
-    "webpack-webext-plugin": "rpl/webpack-webext-plugin"
+    "webpack-webext-plugin": "rpl/webpack-webext-plugin",
+    "uglifyjs-webpack-plugin": "^2.1.1"
   },
   "scripts": {
     "start": "webpack --watch",
-    "build": "webpack",
-    "build:prod": "webpack -p --config webpack.prod.config.js",
+    "build": "webpack -p --config webpack.prod.config.js",
     "webext": "cd build && web-ext run --start-url sais.up.edu.ph -f=nightly"
-  },
-  "dependencies": {
-    "domready": "^1.0.8"
   }
 }
