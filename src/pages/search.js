@@ -7,6 +7,7 @@ const handleSearchPage = $ => {
   const durationRoomEl = $.querySelectorAll(Search.DURATION_ROOM);
   const durationRoomCartEl = $.querySelectorAll(Search.DURATION_ROOM_CART);
 
+  // Combine nodes
   const subjects = [...subjectsEl, ...subjectsCartEl];
   const durationRooms = [...durationRoomEl, ...durationRoomCartEl];
 
@@ -21,12 +22,11 @@ const handleSearchPage = $ => {
       course,
       day,
       time,
-      room,
+      room: room ? room.trim() : null,
       section: '',
     }
   });
 
-  console.log(courses);
   return courses;
 }
 

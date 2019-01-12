@@ -1,4 +1,4 @@
-import { IFRAME, TIMETABLE, Cart } from './selectors';
+import { IFRAME, TIMETABLE, Cart, Search } from './selectors';
 import { IS_SEARCH_PAGE } from './conditionals';
 import wrapper from './html';
 
@@ -9,7 +9,16 @@ import { renderTable } from './pages/timetable';
 const Application = function () {
   if (this.document.readyState === 'complete') {
     if (IS_SEARCH_PAGE(this.document)) {
-      handleSearchPage(this.document);
+      const courses = handleSearchPage(this.document);
+
+      console.log(courses);
+
+      // Render Table
+      const header = this.document.querySelector(Search.HEADER);
+      if (header) {
+        header.innerHTML = wrapper + header.innerHTML;
+        renderTable(this.document.querySelector(TIMETABLE), courses);
+      }
     } else {
       const courses = handleAddToCart(this.document);
 

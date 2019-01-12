@@ -20,9 +20,9 @@ const canvas = `
 const toggle = '<a href="#" class="timetable-button SSSBUTTON_ACTIONLINK">Toggle Timetable</a>';
 
 const wrapper = `
-  <table id="timetable-wrapper">
+  <table id="timetable-wrapper" style="width: 100%;">
     <tr>
-      <td width="250"></td>
+      <td width="100%"></td>
       <td>${download}</td>
       <td>${toggle}</td>
       <td style="position: relative;">${canvas}</td>
