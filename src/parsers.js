@@ -7,7 +7,7 @@ export const parseDay = day => {
 };
 
 export const parseTime = time => {
-  const [ start, end ] = time.match(/\d{1,2}:\d{2}/g) || [];
+  const [start, end] = time.match(/\d{1,2}:\d{2}/g) || [];
 
   if (!start || !end) return null;
 
