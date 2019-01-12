@@ -1,4 +1,4 @@
-import { IFRAME, TIMETABLE, Cart, Search } from './selectors';
+import { IFRAME, TIMETABLE, DOWNLOAD_BUTTON, Cart, Search } from './selectors';
 import { IS_SEARCH_PAGE } from './conditionals';
 import wrapper from './html';
 
@@ -50,8 +50,19 @@ if (iframe) {
     // }, 50);
     const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
     const observer = new MutationObserver(() => {
-      if (!this.document.querySelector(TIMETABLE)) {
-        app();
+      const timetable = this.document.querySelector(TIMETABLE);
+
+      if (!timetable) {
+        app(); // Run app if not mounted
+      } else {
+        const button = this.document.querySelector(DOWNLOAD_BUTTON);
+        button.addEventListener('click', function() {
+          let url = timetable.toDataURL('image/png');
+          url.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+          url.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=schedule.png');
+
+          this.href = url;
+        }, false);
       }
     });
 

@@ -16,3 +16,5 @@ export const Search = {
 }
 
 export const TIMETABLE = '#timetable';
+
+export const DOWNLOAD_BUTTON = '#download-btn';
