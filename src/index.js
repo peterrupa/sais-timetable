@@ -19,7 +19,7 @@ const Application = function () {
   }
 
   if (mountPoint) {
-    header.innerHTML = wrapper + header.innerHTML;
+    mountPoint.innerHTML = wrapper + mountPoint.innerHTML;
 
     const timetable = this.document.querySelector(TIMETABLE);
     const toggle = this.document.querySelector(TOGGLE_TIMETABLE);
