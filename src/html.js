@@ -4,17 +4,8 @@ const download = `
   </a>
 `;
 
-const canvasStyle = {
-  position: 'absolute',
-  left: '50px',
-  top: '-45px',
-  'box-shadow': '0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)',
-}
-
 const canvas = `
-  <canvas id="timetable" style="${
-    Object.entries(canvasStyle).reduce((s, [key, value]) => `${s}${key}:${value}; `, '')
-  }" />
+  <canvas id="timetable" class="shown" />
 `;
 
 const toggle = '<a href="#" class="timetable-button SSSBUTTON_ACTIONLINK">Toggle Timetable</a>';
@@ -22,10 +13,10 @@ const toggle = '<a href="#" class="timetable-button SSSBUTTON_ACTIONLINK">Toggle
 const wrapper = `
   <table id="timetable-wrapper" style="width: 100%;">
     <tr>
-      <td width="100%"></td>
+      <td class="padding"></td>
       <td>${download}</td>
       <td>${toggle}</td>
-      <td style="position: relative;">${canvas}</td>
+      <td class="canvas-container">${canvas}</td>
     </tr>
   </table>
 `;

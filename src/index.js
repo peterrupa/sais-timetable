@@ -1,4 +1,4 @@
-import { IFRAME, TIMETABLE, DOWNLOAD_BUTTON, Cart, Search } from './selectors';
+import { IFRAME, TIMETABLE, DOWNLOAD_BUTTON, TOGGLE_TIMETABLE, Cart, Search } from './selectors';
 import { IS_SEARCH_PAGE } from './conditionals';
 import wrapper from './html';
 
@@ -11,8 +11,6 @@ const Application = function () {
     if (IS_SEARCH_PAGE(this.document)) {
       const courses = handleSearchPage(this.document);
 
-      console.log(courses);
-
       // Render Table
       const header = this.document.querySelector(Search.HEADER);
       if (header) {
@@ -22,14 +20,30 @@ const Application = function () {
     } else {
       const courses = handleAddToCart(this.document);
 
-      console.log(courses);
-
       // Render Table
       const cart = this.document.querySelector(Cart.LIST);
       if (cart) {
         cart.innerHTML = wrapper + cart.innerHTML;
         renderTable(this.document.querySelector(TIMETABLE), courses);
       }
+    }
+
+    // Check if app is mounted
+    const toggle = this.document.querySelector(TOGGLE_TIMETABLE);
+    if (toggle) {
+      const timetable = this.document.querySelector(TIMETABLE);
+
+      toggle.addEventListener('click', e => {
+        e.preventDefault();
+
+        if (timetable.classList.contains('shown')) {
+          timetable.classList.remove('shown');
+          timetable.classList.add('hidden');
+        } else {
+          timetable.classList.remove('hidden');
+          timetable.classList.add('shown');
+        }
+      });
     }
   }
 }
@@ -43,11 +57,6 @@ if (iframe) {
     const app = Application.bind(this);
 
     // Render application
-    // setInterval(() => {
-    //   if (!this.document.querySelector('#timetable')) { // if app is already rendered
-    //     app();
-    //   }
-    // }, 50);
     const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
     const observer = new MutationObserver(() => {
       const timetable = this.document.querySelector(TIMETABLE);

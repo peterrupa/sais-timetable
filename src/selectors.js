@@ -18,3 +18,5 @@ export const Search = {
 export const TIMETABLE = '#timetable';
 
 export const DOWNLOAD_BUTTON = '#download-btn';
+
+export const TOGGLE_TIMETABLE = '.timetable-button';

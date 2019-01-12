@@ -93,11 +93,11 @@ class Scheda {
         let label = '';
 
         if (time === 12) {
-          label = `${time}:00 - 1:00`;
+          label = `${time}:00-1:00`;
         } else if (time > 12) {
-          label = `${time - 12}:00 - ${time - 11}:00`;
+          label = `${time - 12}:00-${time - 11}:00`;
         } else {
-          label = `${time}:00 - ${time + 1}:00`
+          label = `${time}:00-${time + 1}:00`
         }
 
         ctx.fillText(
