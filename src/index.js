@@ -47,16 +47,15 @@ if (iframe) {
   frame.window.addEventListener('load', function () {
     const app = Application.bind(this);
 
-    // Render application
-    const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-    const observer = new MutationObserver(() => {
+    // Listen if application is rendered
+    setInterval(() => {
       const timetable = this.document.querySelector(TIMETABLE);
 
       if (!timetable) {
         app(); // Run app if not mounted
       } else {
         const button = this.document.querySelector(DOWNLOAD_BUTTON);
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
           let url = timetable.toDataURL('image/png');
           url.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
           url.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=schedule.png');
@@ -64,9 +63,6 @@ if (iframe) {
           this.href = url;
         }, false);
       }
-    });
-
-    app();
-    observer.observe(this.document, { subtree: true, attributes: true });
+    }, 50);
   });
 }
