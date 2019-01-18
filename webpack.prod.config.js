@@ -2,6 +2,7 @@ const path = require('path');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ZipPlugin = require('zip-webpack-plugin');
 
 const config = {
   entry: './src/index.js',
@@ -25,15 +26,14 @@ const config = {
     ]
   },
   plugins: [
-    new CopyWebpackPlugin([
-      { from: './src/config' }
-    ])
+    new CopyWebpackPlugin([{ from: './src/config' }]),
+    new ZipPlugin({
+      filename: 'sais-timetable.zip'
+    })
   ],
   optimization: {
-    minimizer: [
-      new UglifyJsPlugin(),
-    ],
+    minimizer: [new UglifyJsPlugin()]
   }
-}
+};
 
 module.exports = config;
