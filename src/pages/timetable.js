@@ -22,16 +22,18 @@ export const renderTable = (table, courses) => {
   const colorMapping = {};
 
   // Render Courses
-  courses.forEach(({ day, time, course: courseCode, section, room }) => {
+  courses.forEach(({ day, time, course: courseCode, section = '', room }) => {
     if (IS_VALID_COURSE(day, time)) {
       // Get Color
       let color;
-      if (colorMapping.hasOwnProperty(courseCode)) {
-        color = colorMapping[courseCode];
+      const key = `${courseCode} ${section}`;
+
+      if (colorMapping.hasOwnProperty(key)) {
+        color = colorMapping[key];
       } else {
         color = defaultColors[colorIndex % defaultColors.length];
         colorIndex++;
-        colorMapping[courseCode] = color;
+        colorMapping[key] = color;
       }
 
       // Loop through days

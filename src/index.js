@@ -57,10 +57,8 @@ if (iframe) {
   frame.window.addEventListener('load', function() {
     const app = Application.bind(this);
 
-    // Render application
-    const MutationObserver =
-      window.MutationObserver || window.WebKitMutationObserver;
-    const observer = new MutationObserver(() => {
+    // Listen if application is rendered
+    setInterval(() => {
       const timetable = this.document.querySelector(TIMETABLE);
 
       if (!timetable) {
@@ -82,9 +80,6 @@ if (iframe) {
           false
         );
       }
-    });
-
-    app();
-    observer.observe(this.document, { subtree: true, attributes: true });
+    }, 50);
   });
 }
