@@ -1,6 +1,6 @@
 # SAIS Timetable
 
-This Chrome/Firefox extension adds a timetable feature to SAIS (the online registration system for UPLB and UPM).
+This [Chrome](https://chrome.google.com/webstore/detail/sais-timetable/kdebapklkojiiipmkbhcnbbhbanopdfk?hl=en)/[Firefox](https://addons.mozilla.org/en-US/firefox/addon/sais-timetable-plugin/) extension adds a timetable feature to SAIS (the online registration system for UPLB and UPM).
 
 ## Contributors
 
