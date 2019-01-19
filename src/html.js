@@ -8,7 +8,8 @@ const canvas = `
   <canvas id="timetable" class="shown" />
 `;
 
-const toggle = '<a href="#" class="timetable-button SSSBUTTON_ACTIONLINK">Toggle Timetable</a>';
+const toggle =
+  '<a href="#" class="timetable-button SSSBUTTON_ACTIONLINK">Toggle Timetable</a>';
 
 const wrapper = `
   <table id="timetable-wrapper" style="width: 100%;">

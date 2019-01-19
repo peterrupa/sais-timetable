@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "SAIS Timetable",
   "description": "Adds a timetable of your classes on the shopping cart page.",
-  "version": "0.4.1",
+  "version": "1.0.0",
   "content_scripts": [
     {
       "matches": ["https://*.up.edu.ph/*/*", "http://*.up.edu.ph/*/*"],
@@ -12,5 +12,10 @@
       "run_at": "document_end"
     }
   ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "permissions": ["activeTab"]
 }

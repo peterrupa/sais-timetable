@@ -9,11 +9,7 @@ const config = {
     path: path.resolve(__dirname, 'build')
   },
   mode: 'development',
-  plugins: [
-    new CopyWebpackPlugin([
-      { from: './src/config' }
-    ])
-  ]
-}
+  plugins: [new CopyWebpackPlugin([{ from: './src/config' }])]
+};
 
 module.exports = config;

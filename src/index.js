@@ -1,4 +1,11 @@
-import { IFRAME, TIMETABLE, DOWNLOAD_BUTTON, TOGGLE_TIMETABLE, Cart, Search } from './selectors';
+import {
+  IFRAME,
+  TIMETABLE,
+  DOWNLOAD_BUTTON,
+  TOGGLE_TIMETABLE,
+  Cart,
+  Search
+} from './selectors';
 import { IS_SEARCH_PAGE } from './conditionals';
 import wrapper from './html';
 
@@ -6,7 +13,7 @@ import handleAddToCart from './pages/cart';
 import handleSearchPage from './pages/search';
 import { renderTable } from './pages/timetable';
 
-const Application = function () {
+const Application = function() {
   let mountPoint;
   let courses;
 
@@ -23,7 +30,7 @@ const Application = function () {
 
     const timetable = this.document.querySelector(TIMETABLE);
     const toggle = this.document.querySelector(TOGGLE_TIMETABLE);
-    
+
     renderTable(this.document.querySelector(TIMETABLE), courses);
     toggle.addEventListener('click', e => {
       e.preventDefault();
@@ -37,14 +44,17 @@ const Application = function () {
       }
     });
   }
-}
+};
 
 const iframe = document.querySelector(IFRAME);
 
 if (iframe) {
-  const frame = { window: iframe.contentWindow, document: iframe.contentDocument };
+  const frame = {
+    window: iframe.contentWindow,
+    document: iframe.contentDocument
+  };
 
-  frame.window.addEventListener('load', function () {
+  frame.window.addEventListener('load', function() {
     const app = Application.bind(this);
 
     // Listen if application is rendered
@@ -55,13 +65,20 @@ if (iframe) {
         app(); // Run app if not mounted
       } else {
         const button = this.document.querySelector(DOWNLOAD_BUTTON);
-        button.addEventListener('click', function () {
-          let url = timetable.toDataURL('image/png');
-          url.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
-          url.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=schedule.png');
+        button.addEventListener(
+          'click',
+          function() {
+            let url = timetable.toDataURL('image/png');
+            url.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+            url.replace(
+              /^data:application\/octet-stream/,
+              'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=schedule.png'
+            );
 
-          this.href = url;
-        }, false);
+            this.href = url;
+          },
+          false
+        );
       }
     }, 50);
   });

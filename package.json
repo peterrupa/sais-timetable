@@ -1,19 +1,20 @@
 {
   "name": "sais-timetable",
-  "version": "0.4.1",
+  "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:rrsilaya/sais-timetable.git",
+  "repository": "git@github.com:peterrupa/sais-timetable.git",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "babel-loader": "^8.0.5",
     "copy-webpack-plugin": "^4.5.2",
+    "uglifyjs-webpack-plugin": "^2.1.1",
     "web-ext": "^2.7.0",
     "webpack": "^4.14.0",
     "webpack-cli": "^3.0.8",
     "webpack-webext-plugin": "rpl/webpack-webext-plugin",
-    "uglifyjs-webpack-plugin": "^2.1.1"
+    "zip-webpack-plugin": "^3.0.0"
   },
   "scripts": {
     "start": "webpack --watch",

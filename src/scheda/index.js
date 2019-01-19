@@ -1,8 +1,4 @@
-import {
-  DAYS,
-  theme,
-  defaultColors,
-} from './constants';
+import { DAYS, theme, defaultColors } from './constants';
 
 import Subject from './subject';
 
@@ -17,7 +13,7 @@ class Scheda {
       id: 'scheda',
       dimensions: { width: 811, height: 391 },
       colors: defaultColors,
-      theme,
+      theme
     };
 
     this.init = this.init.bind(this);
@@ -43,8 +39,8 @@ class Scheda {
       this.ctx = this.canvas.getContext('2d');
       this.config.cell = {
         height: dimensions.height / 13,
-        width: (dimensions.width - theme.timeColumnWidth) / 6,
-      }
+        width: (dimensions.width - theme.timeColumnWidth) / 6
+      };
 
       const ctx = this.ctx;
       const { cell } = this.config;
@@ -60,7 +56,7 @@ class Scheda {
       // Mini Grid
       ctx.beginPath();
       ctx.strokeStyle = theme.grid.mini;
-      for (let y = cell.height; y <= dimensions.height; y += (cell.height / 4)) {
+      for (let y = cell.height; y <= dimensions.height; y += cell.height / 4) {
         this._drawLine({ x: 0, y }, { x: dimensions.width, y });
       }
       ctx.stroke();
@@ -80,7 +76,11 @@ class Scheda {
       // Vertical Main Grid
       ctx.beginPath();
       ctx.strokeStyle = theme.grid.vertical;
-      for (let x = theme.timeColumnWidth; x <= dimensions.width; x += cell.width) {
+      for (
+        let x = theme.timeColumnWidth;
+        x <= dimensions.width;
+        x += cell.width
+      ) {
         this._drawLine({ x, y: 0 }, { x, y: dimensions.height });
       }
       ctx.stroke();
@@ -93,17 +93,20 @@ class Scheda {
         let label = '';
 
         if (time === 12) {
-          label = `${time}:00-1:00`;
+          label = `${time}-1`;
         } else if (time > 12) {
-          label = `${time - 12}:00-${time - 11}:00`;
+          label = `${time - 12}-${time - 11}`;
         } else {
-          label = `${time}:00-${time + 1}:00`
+          label = `${time}-${time + 1}`;
         }
 
         ctx.fillText(
           label,
           this._textAlignCenter(theme.timeColumnWidth, label),
-          ((cell.height / 2) + (theme.time.size / 2)) + ((time - 7) * cell.height) + cell.height
+          cell.height / 2 +
+            theme.time.size / 2 +
+            (time - 7) * cell.height +
+            cell.height
         );
       }
 
@@ -118,10 +121,10 @@ class Scheda {
       DAYS.forEach((day, i) => {
         ctx.fillText(
           `${day}day`,
-          theme.timeColumnWidth + this._textAlignCenter(
-            cell.width,
-            `${day}day`
-          ) + i * cell.width, cell.height / 2 + theme.day.size / 2
+          theme.timeColumnWidth +
+            this._textAlignCenter(cell.width, `${day}day`) +
+            i * cell.width,
+          cell.height / 2 + theme.day.size / 2
         );
       });
     } else {
@@ -130,7 +133,9 @@ class Scheda {
   }
 
   add({ day, time, courseCode, section, room, color }) {
-    color = color || this.config.colors[this.history.length % this.config.colors.length];
+    color =
+      color ||
+      this.config.colors[this.history.length % this.config.colors.length];
     const course = new Subject(day, time, courseCode, section, room, color);
 
     this.history.push(course);
@@ -142,7 +147,9 @@ class Scheda {
     this._repaint();
   }
 
-  get(id) { return this.history.filter(course => course.id === id)[0]; }
+  get(id) {
+    return this.history.filter(course => course.id === id)[0];
+  }
 
   update(id, course) {
     const index = this.history.findIndex(course => course.id === id);
@@ -159,7 +166,9 @@ class Scheda {
     a.type = 'image/png';
     a.target = '_blank';
     a.href = this.canvas.toDataURL();
-    a.onclick = function () { this.parentNode.removeChild(this); }
+    a.onclick = function() {
+      this.parentNode.removeChild(this);
+    };
 
     document.querySelector('body').appendChild(a);
     a.click();
@@ -172,7 +181,9 @@ class Scheda {
     });
   }
 
-  _textAlignCenter(width, text) { return (width - this.ctx.measureText(text).width) / 2; }
+  _textAlignCenter(width, text) {
+    return (width - this.ctx.measureText(text).width) / 2;
+  }
 
   _drawLine(start, end) {
     this.ctx.moveTo(start.x, start.y);
